@@ -45,16 +45,14 @@ public class PicturesFragment extends Fragment implements FragmentCallbacks{
     private Animation menuFABShow, menuFABHide;
     private final int CAMERA_CAPTURED = 100;
     private MainActivity main;
-    private String data;
 
-    PicturesFragment(Context context, String data) {
+    PicturesFragment(Context context) {
         this.context = context;
-        this.data = data;
     }
 
-    public static PicturesFragment getInstance(Context context, String data)
+    public static PicturesFragment getInstance(Context context)
     {
-        return new PicturesFragment(context, data);
+        return new PicturesFragment(context);
     }
 
     @Override
