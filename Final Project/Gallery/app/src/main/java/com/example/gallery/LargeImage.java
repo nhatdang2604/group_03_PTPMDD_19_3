@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,7 +37,9 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -121,6 +124,10 @@ public class LargeImage extends AppCompatActivity {
                     String path = pictureFiles[currentPosition[0]].getAbsolutePath();
                     LargeImage.this.deleteOnPath(path, bottomNavigationView);
                 }
+                 if (item.getItemId() == R.id.shareAlbum) {
+                    String path = pictureFiles[currentPosition[0]].getAbsolutePath();
+                    LargeImage.this.shareOnPath(path)    ;          
+                 }
 
                 // Use addToBackStack to return the previous fragment when the Back button is pressed
                 // Checking null was just a precaution
@@ -162,6 +169,26 @@ public class LargeImage extends AppCompatActivity {
 
         confirmDialog.create();
         confirmDialog.show();
+    }
+  private void shareOnPath(String path) {
+
+       Bitmap bitmap=viewToBitmap(largeImage, largeImage.getWidth(),largeImage.getHeight());
+
+        Intent intent=new Intent(Intent.ACTION_SEND);
+        intent.setType("image/jpeg");
+        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+     File file= new File(path);
+        try {
+            file.createNewFile();
+            FileOutputStream fileOutputStream=new FileOutputStream(file);
+            fileOutputStream.write(byteArrayOutputStream.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra(Intent.EXTRA_STREAM,Uri.parse(path));
+        startActivity(Intent.createChooser(intent,"Share Image"));
+
     }
 
     public void  callScanIntent(Context context, String path) {
