@@ -1,20 +1,20 @@
 package com.example.gallery;
 
 public class AlbumData {
-    private String albumName;
+    private String name;
     private String picturePath;
 
-    public AlbumData(String albumName, String picturePath) {
-        this.albumName = albumName;
+    public AlbumData(String name, String picturePath) {
+        this.name = name;
         this.picturePath = picturePath;
     }
 
-    public String getAlbumName() {
-        return albumName;
+    public String getName() {
+        return name;
     }
 
-    public void setAlbumName(String albumName) {
-        this.albumName = albumName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPicturePath() {

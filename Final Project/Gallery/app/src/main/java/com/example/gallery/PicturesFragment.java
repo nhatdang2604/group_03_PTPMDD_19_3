@@ -39,20 +39,22 @@ public class PicturesFragment extends Fragment implements FragmentCallbacks{
     private File[] pictureFiles;
     private final int spanCount = 4;
 
-    Context context;
+    private Context context;
     private FloatingActionButton btnAdd, btnUpload, btnCamera, btnUrl;
     private boolean addIsPressed;
     private Animation menuFABShow, menuFABHide;
     private final int CAMERA_CAPTURED = 100;
-    MainActivity main;
+    private MainActivity main;
+    private String data;
 
-    PicturesFragment(Context context) {
+    PicturesFragment(Context context, String data) {
         this.context = context;
+        this.data = data;
     }
 
-    public static PicturesFragment getInstance(Context context)
+    public static PicturesFragment getInstance(Context context, String data)
     {
-        return new PicturesFragment(context);
+        return new PicturesFragment(context, data);
     }
 
     @Override
@@ -164,7 +166,7 @@ public class PicturesFragment extends Fragment implements FragmentCallbacks{
         // The idea was to send a string path to the adapter, not a File object
         // The adapter will then create everything we need from the provided path
         // This implementation is not permanent
-        PicturesAdapter picturesAdapter = new PicturesAdapter(context, pathToPicturesFolder);
+        PicturesAdapter picturesAdapter = new PicturesAdapter(context, pathToPicturesFolder, null);
         picturesRecView.setAdapter(picturesAdapter);
         picturesRecView.setLayoutManager(new GridLayoutManager(context, spanCount));
     }

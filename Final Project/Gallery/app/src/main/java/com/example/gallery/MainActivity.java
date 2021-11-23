@@ -34,6 +34,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MainCallbacks {
     /*private final int[] images = {
@@ -168,6 +169,16 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
                 catch (Exception e) {
                     Toast.makeText(MainActivity.this, "Can't set dark mode!", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case "LOAD-ALBUM-DATA-FLAG":
+                String albumName = request;
+                ArrayList<AlbumData> albumDatas = AlbumUtility.getInstance(this).getAllAlbumsData();
+                ArrayList<String> items = new ArrayList<String>();
+                for (AlbumData albumData : albumDatas) {
+                    if(albumData.getName() == albumName)
+                        items.add(albumData.getName());
+                }
+
                 break;
             default:
                 break;

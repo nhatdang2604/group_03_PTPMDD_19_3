@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHolder> {
@@ -22,9 +25,11 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHo
     private final String pathToPicturesFolder;
     private final File pictureFile;
     private File[] pictureFiles;
+    private ArrayList<String> items;
 
-    public PicturesAdapter(Context context, String pathToPicturesFolder) {
+    public PicturesAdapter(Context context, String pathToPicturesFolder, @Nullable ArrayList<String> items) {
         this.context = context;
+        this.items = items;
         this.pathToPicturesFolder = pathToPicturesFolder;
         this.pictureFile = new File(pathToPicturesFolder);
 
@@ -74,7 +79,6 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHo
         intent.putExtra("pathToPicturesFolder", pathToPicturesFolder);
         intent.putExtra("itemPosition", itemPosition);
         context.startActivity(intent);
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

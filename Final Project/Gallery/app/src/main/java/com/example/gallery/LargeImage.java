@@ -48,8 +48,6 @@ public class LargeImage extends AppCompatActivity {
     //we are defining our scale factor.
     private float mScaleFactor = 1.0f;
 
-    private AlbumsFragment albumsFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         changeTheme(checkTheme());
@@ -62,7 +60,6 @@ public class LargeImage extends AppCompatActivity {
         largeImage = findViewById(R.id.largeGalleryItem);
         btnPrev = findViewById(R.id.btnPrev);
         btnNext = findViewById(R.id.btnNext);
-        albumsFragment = new AlbumsFragment(this);
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         // Create a File object from the received path
@@ -196,7 +193,7 @@ public class LargeImage extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.menu_AddToAlbum) {
             addPictureToAlbum();
-            Toast.makeText(this, albumsFragment.getAlbums().size() + " item(s).", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, AlbumUtility.getInstance(this).getAllAlbums().size() + " item(s).", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -204,19 +201,22 @@ public class LargeImage extends AppCompatActivity {
     private void addPictureToAlbum() {
         View addToAlbumView = LayoutInflater.from(this).inflate(R.layout.choose_album_form, null);
         ListView chooseAlbumListView = addToAlbumView.findViewById(R.id.chooseAlbumListView);
-        ArrayList<String> albums = albumsFragment.getAlbums();
+        ArrayList<String> albums = AlbumUtility.getInstance(this).getAllAlbums();
         ArrayAdapter<String> albumDefaultAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, albums);
         chooseAlbumListView.setAdapter(albumDefaultAdapter);
         chooseAlbumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(LargeImage.this, albums.get(i) + " chosen", Toast.LENGTH_SHORT).show();
+                String album = albums.get(i);
+                String path = pictureFiles[currentPosition[0]].getAbsolutePath();
+                String result = "Added " + path + " to " + album;
+                AlbumUtility.getInstance(LargeImage.this).addNewAlbumData(new AlbumData(album, path));
+                Toast.makeText(LargeImage.this, result, Toast.LENGTH_SHORT).show();
             }
         });
 
         AlertDialog.Builder addToAlbumDialog = new AlertDialog.Builder(this);
         addToAlbumDialog.setView(addToAlbumView);
-
         addToAlbumDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

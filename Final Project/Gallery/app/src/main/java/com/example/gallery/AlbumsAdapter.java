@@ -16,13 +16,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
+
 import java.util.ArrayList;
 
 public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder> {
-    protected ArrayList<String> albums;
+    private ArrayList<String> albums;
+    private Context context;
 
-    public AlbumsAdapter(ArrayList<String> albums) {
-        this.albums = albums;
+    public AlbumsAdapter(Context context) {
+        this.context = context;
+        this.albums = AlbumUtility.getInstance(context).getAllAlbums();
     }
 
     public void setAlbums(ArrayList<String> albums) {
@@ -61,13 +65,24 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
         ImageView albumThumbnail;
         TextView albumName, albumItemCount;
         ImageView albumItemMenu;
+        MaterialCardView albumCard;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            albumCard = itemView.findViewById(R.id.albumCard);
             albumThumbnail = itemView.findViewById(R.id.albumThumbnail);
             albumName = itemView.findViewById(R.id.albumName);
             albumItemCount = itemView.findViewById(R.id.albumItemCount);
             albumItemMenu = itemView.findViewById(R.id.albumItemMenu);
+
+            albumCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String albumName = albums.get(getAdapterPosition());
+                    ((MainActivity)context).onMsgFromFragToMain("LOAD-ALBUM-DATA-FLAG", albumName);
+                    Toast.makeText(itemView.getContext(), albumName + " selected", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             albumItemMenu.setOnClickListener(new View.OnClickListener() {
                 @Override

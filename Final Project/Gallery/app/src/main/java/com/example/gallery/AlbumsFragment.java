@@ -57,11 +57,11 @@ public class AlbumsFragment extends Fragment {
         View albumsFragment = inflater.inflate(R.layout.albums_fragment, container, false);
 
         albumRecView = albumsFragment.findViewById(R.id.albumsRecView);
-        albumsAdapter = new AlbumsAdapter(albums);
+        albumsAdapter = new AlbumsAdapter(context);
         albumRecView.setAdapter(albumsAdapter);
         albumRecView.setLayoutManager(new LinearLayoutManager(albumsFragment.getContext()));
-        btnAdd = (FloatingActionButton) albumsFragment.findViewById(R.id.btnAdd_AlbumsFragment);
 
+        btnAdd = (FloatingActionButton) albumsFragment.findViewById(R.id.btnAdd_AlbumsFragment);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
